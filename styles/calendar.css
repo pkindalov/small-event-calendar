@@ -1,48 +1,71 @@
-*{
-    margin: 0;
-    padding: 0;
-    font-size: 62.5%;  
-  }
-
-:root{
-    --calendar-width: 120rem;
+* {
+  margin: 0;
+  padding: 0;
+  font-size: 62.5%;
 }
-  
+
+:root {
+  --calendar-width: 120rem;
+  --calendar-cell__height: 5rem;
+}
+
+body{
+  font-family: "Poppins", "Inter";
+}
+
 .container {
-    border: 1px solid black;
-    width: var(--calendar-width); /* Set your desired calendar width here */
-    display: flex;
-    justify-content: center;
-    margin: 2rem auto;
-  }
-  
-  .js-calendar {
-    border: 1px solid blue;
-    width: 100%;
-  }
-  
-  .js-calendar__header {
-    display: flex;
-  }
-  
-  .js-calendar__header-item {
-    font-weight: bold;
-    text-transform: uppercase;
-    font-size: 1.3rem;
-    flex: 1;
-    text-align: center;
-  }
-  
-  .js-calendar__body {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr); /* Divide the calendar into 7 equal columns */
-    gap: 1px; /* Set the gap between cells */
-  }
-  
-  .js-calendar__body-item {
-    border: 1px solid green;
-    text-align: center;
-    font-size: 1.4rem;
-    padding: 0.5rem; /* Add some padding to the cells */
-  }
-  
+  /* border: 1px solid black; */
+  /* Set your desired calendar width here */
+  width: var(--calendar-width); 
+  display: flex;
+  justify-content: center;
+  margin: 2rem auto;
+}
+
+.js-calendar {
+  /* border: 1px solid blue; */
+  width: 100%;
+}
+
+.js-calendar__header {
+  display: flex;
+  border-top: 0;
+  border-bottom: 1px solid black;
+  border-left: 1px solid black;
+  border-right: 1px solid black;
+}
+
+.js-calendar__header-item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 1.3rem;
+  flex: 1;
+  text-align: center;
+  height: calc(var(--calendar-cell__height) / 2);
+}
+
+.js-calendar__body {
+  display: grid;
+  grid-template-columns: repeat(
+    7,
+    1fr
+  ); /* Divide the calendar into 7 equal columns */
+  gap: 0.5rem; /* Set the gap between cells */
+  margin-top: 0.5rem;
+}
+
+.js-calendar__body-item {
+  border: 1px solid black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* for media queries it looks better */
+  /* height: var(--calendar-cell__height) / 2; */
+  height: var(--calendar-cell__height);
+  text-align: center;
+  font-size: 1.4rem;
+  padding: 0.5rem; /* Add some padding to the cells */
+}
