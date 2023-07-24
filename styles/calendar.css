@@ -44,7 +44,7 @@ body{
   font-size: 1.3rem;
   flex: 1;
   text-align: center;
-  height: calc(var(--calendar-cell__height) / 2);
+  height: calc(var(--calendar-cell__height));
 }
 
 .js-calendar__body {
