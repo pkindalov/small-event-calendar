@@ -160,6 +160,46 @@ const createMonthSelect = ({lang, cls}) => {
   return select;
 };
 
+const addPrevYears = ({currentYear, limitYears, select}) => {
+  let option = null;
+  let year = currentYear;
+  for(let i = 1; i <= limitYears; i++){
+    year--;
+    option = document.createElement("option");
+    option.setAttribute("value", year);
+    option.innerText = year;
+    select.prepend(option);
+  }
+}
+
+const addNextYears = ({currentYear, limitYears, select}) => {
+  let option = null;
+  let year = currentYear;
+  for(let i = 1; i <= limitYears; i++){
+    year++;
+    option = document.createElement("option");
+    option.setAttribute("value", year);
+    option.innerText = year;
+    select.append(option);
+  }
+}
+
+function createYearSelect({cls}) {
+  const currentYear = new Date().getFullYear();
+  const limitYears = 20;
+  let select = document.createElement("select");
+  select.setAttribute("class", cls);
+  select.setAttribute("name", "year");
+  const firstOption = document.createElement("option");
+  firstOption.setAttribute("value", currentYear);
+  firstOption.setAttribute("selected", "selected");
+  firstOption.innerText = currentYear;
+  select.append(firstOption);
+  addPrevYears({currentYear, limitYears, select});
+  addNextYears({currentYear, limitYears, select});
+  return select;
+}
+
 function loadControls(lang) {
   const containerCls = "js-calendar__controls";
   const container = document.getElementsByClassName(containerCls)[0];
@@ -179,7 +219,12 @@ function loadControls(lang) {
     cls: "js-calendar__controls-month-year-selects_cont__item",
   });
 
+  const yearsSelect = createYearSelect({
+    cls: "js-calendar__controls-month-year-selects_cont__item",
+  });
+
   monthAndYearSelectsCont.append(monthsSelect);
+  monthAndYearSelectsCont.append(yearsSelect);
 
 
   const nextMonthBtn = createMonthChangeBtn({
