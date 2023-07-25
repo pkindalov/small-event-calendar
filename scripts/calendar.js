@@ -52,8 +52,9 @@ const drawBody = ({ monthIndex, year }) => {
   let numberOfDays = getDaysInMonth(monthIndex);
   numberOfDays += dayOfWeekIndex;
   const calendar = document.getElementsByClassName("js-calendar")[0];
-  const bodyDiv = document.createElement("div");
+  const bodyDiv = document.getElementsByClassName("js-calendar__body")[0] ? document.getElementsByClassName("js-calendar__body")[0] : document.createElement("div");
   bodyDiv.setAttribute("class", "js-calendar__body");
+  bodyDiv.innerHTML = "";
   let dayCell = null;
 
   for (let i = 0; i < numberOfDays; i++) {
@@ -81,6 +82,25 @@ const pickDayNamesLangStartMon = (lang = "en") => {
   }
 };
 
+const getPrevMonth = () => {
+  const monthSelect = document.getElementById('js-calendar__controls-month-year-selects_cont__months');
+  const monthIndex = parseInt(monthSelect.value) - 1;
+  const yearsSelect = document.getElementById('js-calendar__controls-month-year-selects_cont__years');
+  // console.log(monthSelect.value);
+  if(monthIndex < 0) return;
+  monthSelect.value = monthIndex;
+  drawBody({monthIndex, year: +yearsSelect.value});
+}
+
+const getNextMonth = () => {
+  const monthSelect = document.getElementById('js-calendar__controls-month-year-selects_cont__months');
+  const monthIndex = parseInt(monthSelect.value) + 1;
+  const yearsSelect = document.getElementById('js-calendar__controls-month-year-selects_cont__years');
+  if(monthIndex > 11) return;
+  monthSelect.value = monthIndex;
+  drawBody({monthIndex, year: +yearsSelect.value});
+}
+
 const createMonthChangeBtn = ({ direction, id, cls }) => {
   let button = null;
   switch (direction) {
@@ -88,11 +108,13 @@ const createMonthChangeBtn = ({ direction, id, cls }) => {
       button = document.createElement("button");
       button.setAttribute("class", cls);
       button.innerText = "<";
+      button.onclick = () => getPrevMonth();
       break;
     case "next":
       button = document.createElement("button");
       button.setAttribute("class", cls);
       button.innerText = ">";
+      button.onclick = () => getNextMonth();
       break;
     default:
       throw new Error(`Unknow button ${direction}`);
@@ -133,7 +155,7 @@ const createMonthSelect = ({lang, cls}) => {
         "Август",
         "Септември",
         "Октомври",
-        "Ноевмри",
+        "Ноември",
         "Декември",
       ];
       break;
@@ -151,7 +173,7 @@ const createMonthSelect = ({lang, cls}) => {
   firstOption.setAttribute("selected", "selected");
   select.appendChild(firstOption);
   let option = null;
-  for(let index = 1; index < monthNames.length - 1; index++) {
+  for(let index = 1; index < monthNames.length; index++) {
     option = document.createElement("option");
     option.setAttribute("value", index);
     option.innerText = monthNames[index];
@@ -190,6 +212,7 @@ function createYearSelect({cls}) {
   let select = document.createElement("select");
   select.setAttribute("class", cls);
   select.setAttribute("name", "year");
+  select.setAttribute("id", "js-calendar__controls-month-year-selects_cont__years")
   const firstOption = document.createElement("option");
   firstOption.setAttribute("value", currentYear);
   firstOption.setAttribute("selected", "selected");
