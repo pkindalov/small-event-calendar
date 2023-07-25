@@ -81,12 +81,129 @@ const pickDayNamesLangStartMon = (lang = "en") => {
   }
 };
 
+const createMonthChangeBtn = ({ direction, id, cls }) => {
+  let button = null;
+  switch (direction) {
+    case "prev":
+      button = document.createElement("button");
+      button.setAttribute("class", cls);
+      button.innerText = "<";
+      break;
+    case "next":
+      button = document.createElement("button");
+      button.setAttribute("class", cls);
+      button.innerText = ">";
+      break;
+    default:
+      throw new Error(`Unknow button ${direction}`);
+      return;
+  }
+
+  return button;
+};
+
+const createMonthSelect = ({lang, cls}) => {
+  let monthNames = null;
+  switch (lang) {
+    case "en":
+      monthNames = [
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December",
+      ];
+      break;
+    case "bg":
+      monthNames = [
+        "Януари",
+        "Февруари",
+        "Март",
+        "Април",
+        "Май",
+        "Юни",
+        "Юли",
+        "Август",
+        "Септември",
+        "Октомври",
+        "Ноевмри",
+        "Декември",
+      ];
+      break;
+    default:
+      throw new Error(`The language ${lang} is not supported yet`);
+      return;
+  }
+  const select = document.createElement("select");
+  select.setAttribute("class", cls);
+  select.setAttribute("id", "js-calendar__controls-month-year-selects_cont__months");
+  select.setAttribute("name", "months");
+  const firstOption = document.createElement("option");
+  firstOption.setAttribute("value", 0);
+  firstOption.innerText = monthNames[0];
+  firstOption.setAttribute("selected", "selected");
+  select.appendChild(firstOption);
+  let option = null;
+  for(let index = 1; index < monthNames.length - 1; index++) {
+    option = document.createElement("option");
+    option.setAttribute("value", index);
+    option.innerText = monthNames[index];
+    select.appendChild(option);
+  }
+  return select;
+};
+
+function loadControls(lang) {
+  const containerCls = "js-calendar__controls";
+  const container = document.getElementsByClassName(containerCls)[0];
+  const prevMonthBtn = createMonthChangeBtn({
+    direction: "prev",
+    id: "js-calendar__controls-prevBtn",
+    cls: "js-calendar__controls-btn",
+  });
+
+  const monthAndYearSelectsCont = document.createElement("div");
+  monthAndYearSelectsCont.setAttribute(
+    "class",
+    "js-calendar__controls-month-year-selects_cont"
+  );
+  const monthsSelect = createMonthSelect({
+    lang: lang,
+    cls: "js-calendar__controls-month-year-selects_cont__item",
+  });
+
+  monthAndYearSelectsCont.append(monthsSelect);
+
+
+  const nextMonthBtn = createMonthChangeBtn({
+    direction: "next",
+    id: "js-calendar__controls-nextBtn",
+    cls: "js-calendar__controls-btn",
+  });
+  container.append(prevMonthBtn);
+  container.append(monthAndYearSelectsCont);
+  container.append(nextMonthBtn);
+}
+
 function drawCalendar({ lang }) {
   const dayNames = pickDayNamesLangStartMon(lang);
+  loadControls(lang);
   drawHeader(dayNames);
   drawBody({ monthIndex: 11, year: 2023 });
 }
 
 document.addEventListener("DOMContentLoaded", function () {
-  drawCalendar({ lang: "bg" });
+  try {
+    drawCalendar({ lang: "bg" });
+  } catch (e) {
+    console.log(e.message);
+    console.log(e);
+  }
 });

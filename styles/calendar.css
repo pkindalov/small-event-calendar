@@ -7,16 +7,17 @@
 :root {
   --calendar-width: 120rem;
   --calendar-cell__height: 5rem;
+  --selects_height: 4rem;
 }
 
-body{
+body {
   font-family: "Poppins", "Inter";
 }
 
 .container {
   /* border: 1px solid black; */
   /* Set your desired calendar width here */
-  width: var(--calendar-width); 
+  width: var(--calendar-width);
   display: flex;
   justify-content: center;
   margin: 2rem auto;
@@ -27,12 +28,41 @@ body{
   width: 100%;
 }
 
-.js-calendar__header {
+.js-calendar__header,
+.js-calendar__controls {
   display: flex;
   border-top: 0;
   border-bottom: 1px solid black;
   border-left: 1px solid black;
   border-right: 1px solid black;
+  margin-top: 0.5rem;
+}
+
+.js-calendar__controls {
+  height: 10rem;
+  border-top: 1px solid black;
+  display: flex;
+}
+
+.js-calendar__controls-btn {
+  width: 16.7rem;
+  font-size: 2.5rem;
+  background: none;
+  border: 0;
+}
+
+.js-calendar__controls-month-year-selects_cont {
+  /* border: 1px solid red; */
+  flex: 1;
+  display: flex;
+  font-size: 2.5rem;
+  justify-content: center;
+}
+
+.js-calendar__controls-month-year-selects_cont__item {
+  border: 0;
+  align-self: center;
+  height: var(--selects_height);
 }
 
 .js-calendar__header-item {
