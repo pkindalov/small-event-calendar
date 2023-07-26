@@ -14,12 +14,13 @@ const drawHeader = (dayNames) => {
   calendarCont.append(calendarHeaderCont);
 };
 
-const getFirstDayOfMonth = (monthIndex) => {
+const getFirstDayOfMonth = (monthIndex, year) => {
   if (monthIndex < 0 || monthIndex > 11) {
     return "Invalid month index. Please provide a value between 0 and 11.";
   }
 
-  const currentDate = new Date();
+  const today = new Date().getDate();
+  const currentDate = new Date(year, monthIndex, today);
   const firstDayOfMonth = new Date(currentDate.getFullYear(), monthIndex, 1);
   const daysOfWeek = [
     "Monday",
@@ -124,6 +125,12 @@ const createMonthChangeBtn = ({ direction, id, cls }) => {
   return button;
 };
 
+const changeCurrentMonth = (select) => {
+  const monthIndex = +select.value;
+  const yearsSelect = document.getElementById('js-calendar__controls-month-year-selects_cont__years');
+  drawBody({monthIndex, year: +yearsSelect.value});
+}
+
 const createMonthSelect = ({lang, cls}) => {
   let monthNames = null;
   switch (lang) {
@@ -179,6 +186,7 @@ const createMonthSelect = ({lang, cls}) => {
     option.innerText = monthNames[index];
     select.appendChild(option);
   }
+  select.onchange = () => changeCurrentMonth(select);
   return select;
 };
 
@@ -206,6 +214,12 @@ const addNextYears = ({currentYear, limitYears, select}) => {
   }
 }
 
+const changeCurrentYear = (select) => {
+  const year = +select.value;
+  const monthsSelect = document.getElementById('js-calendar__controls-month-year-selects_cont__months');
+  drawBody({monthIndex: +monthsSelect.value, year});
+}
+
 function createYearSelect({cls}) {
   const currentYear = new Date().getFullYear();
   const limitYears = 20;
@@ -220,6 +234,7 @@ function createYearSelect({cls}) {
   select.append(firstOption);
   addPrevYears({currentYear, limitYears, select});
   addNextYears({currentYear, limitYears, select});
+  select.onchange = () => changeCurrentYear(select);
   return select;
 }
 
@@ -264,7 +279,7 @@ function drawCalendar({ lang }) {
   const dayNames = pickDayNamesLangStartMon(lang);
   loadControls(lang);
   drawHeader(dayNames);
-  drawBody({ monthIndex: 11, year: 2023 });
+  drawBody({ monthIndex: 0, year: new Date().getFullYear() });
 }
 
 document.addEventListener("DOMContentLoaded", function () {
