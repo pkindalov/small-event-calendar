@@ -39,19 +39,19 @@ const getFirstDayOfMonth = (monthIndex, year) => {
 
 function getDaysInMonth(monthIndex, year) {
   // Check if the provided month index is valid (0 to 11, where 0 is January and 11 is December)
-  console.log(year);
   if (monthIndex < 0 || monthIndex > 11) {
     return "Invalid month index. Please provide a value between 0 and 11.";
   }
 
-  const lastDayOfMonth = new Date(new Date().getFullYear(), monthIndex + 1, 0);
+  const lastDayOfMonth = new Date(year, monthIndex + 1, 0);
   return lastDayOfMonth.getDate();
 }
 
 const drawBody = ({ monthIndex, year }) => {
   const { dayOfWeek, dayOfWeekIndex } = getFirstDayOfMonth(monthIndex, year);
-  let numberOfDays = getDaysInMonth(monthIndex);
+  let numberOfDays = getDaysInMonth(monthIndex, year);
   numberOfDays += dayOfWeekIndex;
+  const todayNumber = new Date().getDate();
   const calendar = document.getElementsByClassName("js-calendar")[0];
   const bodyDiv = document.getElementsByClassName("js-calendar__body")[0] ? document.getElementsByClassName("js-calendar__body")[0] : document.createElement("div");
   bodyDiv.setAttribute("class", "js-calendar__body");
@@ -65,6 +65,9 @@ const drawBody = ({ monthIndex, year }) => {
       dayCell.innerText = "";
     } else {
       dayCell.innerText = i + 1 - dayOfWeekIndex;
+      if(i + 1 - dayOfWeekIndex === todayNumber) {
+        dayCell.classList.add("class","js-calendar__body-item__today");
+      }
     }
 
     bodyDiv.append(dayCell);
@@ -170,19 +173,16 @@ const createMonthSelect = ({lang, cls}) => {
       throw new Error(`The language ${lang} is not supported yet`);
       return;
   }
+  const currentMonth = new Date().getMonth();
   const select = document.createElement("select");
   select.setAttribute("class", cls);
   select.setAttribute("id", "js-calendar__controls-month-year-selects_cont__months");
   select.setAttribute("name", "months");
-  const firstOption = document.createElement("option");
-  firstOption.setAttribute("value", 0);
-  firstOption.innerText = monthNames[0];
-  firstOption.setAttribute("selected", "selected");
-  select.appendChild(firstOption);
   let option = null;
-  for(let index = 1; index < monthNames.length; index++) {
+  for(let index = 0; index < monthNames.length; index++) {
     option = document.createElement("option");
     option.setAttribute("value", index);
+    if(index === currentMonth) option.setAttribute("selected", true);
     option.innerText = monthNames[index];
     select.appendChild(option);
   }
@@ -279,7 +279,7 @@ function drawCalendar({ lang }) {
   const dayNames = pickDayNamesLangStartMon(lang);
   loadControls(lang);
   drawHeader(dayNames);
-  drawBody({ monthIndex: 0, year: new Date().getFullYear() });
+  drawBody({ monthIndex: new Date().getMonth(), year: new Date().getFullYear() });
 }
 
 document.addEventListener("DOMContentLoaded", function () {
