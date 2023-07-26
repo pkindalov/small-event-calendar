@@ -32,15 +32,20 @@ body {
 .js-calendar__controls {
   display: flex;
   border-top: 0;
+  /* margin-top: 0.5rem; */
+}
+
+.js-calendar__header {
+  
   border-bottom: 1px solid black;
   border-left: 1px solid black;
   border-right: 1px solid black;
-  margin-top: 0.5rem;
 }
 
 .js-calendar__controls {
   height: 10rem;
-  border-top: 1px solid black;
+  /* border-top: 1px solid black; */
+  margin-bottom: 3rem;
   display: flex;
 }
 
@@ -104,7 +109,7 @@ body {
 
 .js-calendar__body-item__today{
   color: white;
-  font-size: 2rem;
+  font-size: 3rem;
   /* background-color: rgb(243, 243, 243); */
   background-color: black;
 }
