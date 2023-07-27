@@ -53,7 +53,9 @@ const drawBody = ({ monthIndex, year, events }) => {
   numberOfDays += dayOfWeekIndex;
   const todayNumber = new Date().getDate();
   const calendar = document.getElementsByClassName("js-calendar")[0];
-  const bodyDiv = document.getElementsByClassName("js-calendar__body")[0] ? document.getElementsByClassName("js-calendar__body")[0] : document.createElement("div");
+  const bodyDiv = document.getElementsByClassName("js-calendar__body")[0]
+    ? document.getElementsByClassName("js-calendar__body")[0]
+    : document.createElement("div");
   bodyDiv.setAttribute("class", "js-calendar__body");
   bodyDiv.innerHTML = "";
   let dayCell = null;
@@ -71,20 +73,25 @@ const drawBody = ({ monthIndex, year, events }) => {
       day = i + 1 - dayOfWeekIndex;
       dayCell.innerText = day;
       day = day < 10 ? "0" + day : day;
-      date = day + "-" + (monthIndex + 1 < 10 ? "0" + (monthIndex + 1) : monthIndex + 1) + "-" + year;
+      date =
+        day +
+        "-" +
+        (monthIndex + 1 < 10 ? "0" + (monthIndex + 1) : monthIndex + 1) +
+        "-" +
+        year;
       // eventsFound = events[0][date];
-      eventsFound = events.find(event => event[date]);
+      eventsFound = events.find((event) => event[date]);
       //  events[0][date];
       // console.log(date + " =>" + eventsFound);
-      if(eventsFound) {
+      if (eventsFound) {
         eventSpan = document.createElement("span");
         eventSpan.setAttribute("class", "js-calendar__body-event-span");
         dayCell.appendChild(eventSpan);
       }
       // console.log(eventsFound);
-      if(i + 1 - dayOfWeekIndex === todayNumber) {
-        dayCell.classList.add("class","js-calendar__body-item__today");
-        if(eventsFound) {
+      if (i + 1 - dayOfWeekIndex === todayNumber) {
+        dayCell.classList.add("class", "js-calendar__body-item__today");
+        if (eventsFound) {
           eventSpan.classList.add("js-calendar__body-event-span-today");
           dayCell.appendChild(eventSpan);
         }
@@ -108,23 +115,31 @@ const pickDayNamesLangStartMon = (lang = "en") => {
 };
 
 const getPrevMonth = (events) => {
-  const monthSelect = document.getElementById('js-calendar__controls-month-year-selects_cont__months');
+  const monthSelect = document.getElementById(
+    "js-calendar__controls-month-year-selects_cont__months"
+  );
   const monthIndex = parseInt(monthSelect.value) - 1;
-  const yearsSelect = document.getElementById('js-calendar__controls-month-year-selects_cont__years');
+  const yearsSelect = document.getElementById(
+    "js-calendar__controls-month-year-selects_cont__years"
+  );
   // console.log(monthSelect.value);
-  if(monthIndex < 0) return;
+  if (monthIndex < 0) return;
   monthSelect.value = monthIndex;
-  drawBody({monthIndex, year: +yearsSelect.value, events: events});
-}
+  drawBody({ monthIndex, year: +yearsSelect.value, events: events });
+};
 
 const getNextMonth = (events) => {
-  const monthSelect = document.getElementById('js-calendar__controls-month-year-selects_cont__months');
+  const monthSelect = document.getElementById(
+    "js-calendar__controls-month-year-selects_cont__months"
+  );
   const monthIndex = parseInt(monthSelect.value) + 1;
-  const yearsSelect = document.getElementById('js-calendar__controls-month-year-selects_cont__years');
-  if(monthIndex > 11) return;
+  const yearsSelect = document.getElementById(
+    "js-calendar__controls-month-year-selects_cont__years"
+  );
+  if (monthIndex > 11) return;
   monthSelect.value = monthIndex;
-  drawBody({monthIndex, year: +yearsSelect.value, events: events});
-}
+  drawBody({ monthIndex, year: +yearsSelect.value, events: events });
+};
 
 const createMonthChangeBtn = ({ direction, id, cls, events }) => {
   let button = null;
@@ -151,11 +166,13 @@ const createMonthChangeBtn = ({ direction, id, cls, events }) => {
 
 const changeCurrentMonth = (select, events) => {
   const monthIndex = +select.value;
-  const yearsSelect = document.getElementById('js-calendar__controls-month-year-selects_cont__years');
-  drawBody({monthIndex, year: +yearsSelect.value, events: events});
-}
+  const yearsSelect = document.getElementById(
+    "js-calendar__controls-month-year-selects_cont__years"
+  );
+  drawBody({ monthIndex, year: +yearsSelect.value, events: events });
+};
 
-const createMonthSelect = ({lang, cls, events}) => {
+const createMonthSelect = ({ lang, cls, events }) => {
   let monthNames = null;
   switch (lang) {
     case "en":
@@ -197,13 +214,16 @@ const createMonthSelect = ({lang, cls, events}) => {
   const currentMonth = new Date().getMonth();
   const select = document.createElement("select");
   select.setAttribute("class", cls);
-  select.setAttribute("id", "js-calendar__controls-month-year-selects_cont__months");
+  select.setAttribute(
+    "id",
+    "js-calendar__controls-month-year-selects_cont__months"
+  );
   select.setAttribute("name", "months");
   let option = null;
-  for(let index = 0; index < monthNames.length; index++) {
+  for (let index = 0; index < monthNames.length; index++) {
     option = document.createElement("option");
     option.setAttribute("value", index);
-    if(index === currentMonth) option.setAttribute("selected", true);
+    if (index === currentMonth) option.setAttribute("selected", true);
     option.innerText = monthNames[index];
     select.appendChild(option);
   }
@@ -211,50 +231,55 @@ const createMonthSelect = ({lang, cls, events}) => {
   return select;
 };
 
-const addPrevYears = ({currentYear, limitYears, select}) => {
+const addPrevYears = ({ currentYear, limitYears, select }) => {
   let option = null;
   let year = currentYear;
-  for(let i = 1; i <= limitYears; i++){
+  for (let i = 1; i <= limitYears; i++) {
     year--;
     option = document.createElement("option");
     option.setAttribute("value", year);
     option.innerText = year;
     select.prepend(option);
   }
-}
+};
 
-const addNextYears = ({currentYear, limitYears, select}) => {
+const addNextYears = ({ currentYear, limitYears, select }) => {
   let option = null;
   let year = currentYear;
-  for(let i = 1; i <= limitYears; i++){
+  for (let i = 1; i <= limitYears; i++) {
     year++;
     option = document.createElement("option");
     option.setAttribute("value", year);
     option.innerText = year;
     select.append(option);
   }
-}
+};
 
 const changeCurrentYear = (select, events) => {
   const year = +select.value;
-  const monthsSelect = document.getElementById('js-calendar__controls-month-year-selects_cont__months');
-  drawBody({monthIndex: +monthsSelect.value, year, events});
-}
+  const monthsSelect = document.getElementById(
+    "js-calendar__controls-month-year-selects_cont__months"
+  );
+  drawBody({ monthIndex: +monthsSelect.value, year, events });
+};
 
-function createYearSelect({cls, events}) {
+function createYearSelect({ cls, events }) {
   const currentYear = new Date().getFullYear();
   const limitYears = 20;
   let select = document.createElement("select");
   select.setAttribute("class", cls);
   select.setAttribute("name", "year");
-  select.setAttribute("id", "js-calendar__controls-month-year-selects_cont__years")
+  select.setAttribute(
+    "id",
+    "js-calendar__controls-month-year-selects_cont__years"
+  );
   const firstOption = document.createElement("option");
   firstOption.setAttribute("value", currentYear);
   firstOption.setAttribute("selected", "selected");
   firstOption.innerText = currentYear;
   select.append(firstOption);
-  addPrevYears({currentYear, limitYears, select});
-  addNextYears({currentYear, limitYears, select});
+  addPrevYears({ currentYear, limitYears, select });
+  addNextYears({ currentYear, limitYears, select });
   select.onchange = () => changeCurrentYear(select, events);
   return select;
 }
@@ -266,7 +291,7 @@ function loadControls(lang, events) {
     direction: "prev",
     id: "js-calendar__controls-prevBtn",
     cls: "js-calendar__controls-btn",
-    events: events
+    events: events,
   });
 
   const monthAndYearSelectsCont = document.createElement("div");
@@ -277,23 +302,22 @@ function loadControls(lang, events) {
   const monthsSelect = createMonthSelect({
     lang: lang,
     cls: "js-calendar__controls-month-year-selects_cont__item",
-    events: events
+    events: events,
   });
 
   const yearsSelect = createYearSelect({
     cls: "js-calendar__controls-month-year-selects_cont__item",
-    events: events
+    events: events,
   });
 
   monthAndYearSelectsCont.append(monthsSelect);
   monthAndYearSelectsCont.append(yearsSelect);
 
-
   const nextMonthBtn = createMonthChangeBtn({
     direction: "next",
     id: "js-calendar__controls-nextBtn",
     cls: "js-calendar__controls-btn",
-    events: events
+    events: events,
   });
   container.append(prevMonthBtn);
   container.append(monthAndYearSelectsCont);
@@ -304,9 +328,11 @@ function drawCalendar({ lang, events }) {
   const dayNames = pickDayNamesLangStartMon(lang);
   loadControls(lang, events);
   drawHeader(dayNames);
-  drawBody({ monthIndex: new Date().getMonth(), year: new Date().getFullYear(), events: events });
+  drawBody({
+    monthIndex: new Date().getMonth(),
+    year: new Date().getFullYear(),
+    events: events,
+  });
 }
 
-export {
-  drawCalendar
-}
+export { drawCalendar };

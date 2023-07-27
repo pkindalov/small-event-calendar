@@ -36,7 +36,6 @@ body {
 }
 
 .js-calendar__header {
-  
   border-bottom: 1px solid black;
   border-left: 1px solid black;
   border-right: 1px solid black;
@@ -108,14 +107,14 @@ body {
   padding: 0.5rem; /* Add some padding to the cells */
 }
 
-.js-calendar__body-item__today{
+.js-calendar__body-item__today {
   color: white;
   font-size: 3rem;
   /* background-color: rgb(243, 243, 243); */
   background-color: black;
 }
 
-.js-calendar__body-event-span{
+.js-calendar__body-event-span {
   display: inline-block;
   width: 1rem;
   height: 1rem;
@@ -123,6 +122,6 @@ body {
   background-color: #000;
 }
 
-.js-calendar__body-event-span-today{
+.js-calendar__body-event-span-today {
   background-color: #fff;
 }
