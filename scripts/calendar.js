@@ -69,6 +69,8 @@ const drawBody = ({ monthIndex, year, events }) => {
     dayCell.setAttribute("class", "js-calendar__body-item");
     if (i < dayOfWeekIndex) {
       dayCell.innerText = "";
+      dayCell.classList.remove("js-calendar__body-item");
+      dayCell.classList.add("js-calendar__body-empty");
     } else {
       day = i + 1 - dayOfWeekIndex;
       dayCell.innerText = day;

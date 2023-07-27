@@ -90,7 +90,7 @@ body {
     1fr
   ); /* Divide the calendar into 7 equal columns */
   gap: 0.5rem; /* Set the gap between cells */
-  margin-top: 0.5rem;
+  margin-top: 3.5rem;
 }
 
 .js-calendar__body-item {
@@ -105,6 +105,11 @@ body {
   text-align: center;
   font-size: 1.4rem;
   padding: 0.5rem; /* Add some padding to the cells */
+  cursor: pointer;
+}
+
+.js-calendar__body-empty{
+  border: 0;
 }
 
 .js-calendar__body-item__today {
