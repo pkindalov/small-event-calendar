@@ -47,6 +47,37 @@ function getDaysInMonth(monthIndex, year) {
   return lastDayOfMonth.getDate();
 }
 
+const closeBackdrop = () => {
+  const backdrops = document.getElementsByClassName("js-backdrop");
+  Array.from(backdrops).forEach(backdrop => backdrop.remove());
+}
+
+const createBackdrop = () => {
+  const div = document.createElement("div");
+  div.setAttribute("class", "js-backdrop");
+  const closeBackdropBtn = document.createElement("button");
+  closeBackdropBtn.setAttribute("class", "js-backdrop-close");
+  closeBackdropBtn.innerText = "X";
+  closeBackdropBtn.onclick = () => closeBackdrop();
+  div.append(closeBackdropBtn);
+  return div;
+}
+
+function showDayEvents(e, dayEvents) {
+  const selectedDay = +e.currentTarget.innerText;
+  const backgdrop = createBackdrop();
+  document.body.prepend(backgdrop);
+  const modalWindow = document.createElement("div");
+  modalWindow.setAttribute("class", "js-modal-dayEvent");
+
+
+
+
+  backgdrop.append(modalWindow);
+  // console.log(selectedDay);
+  // console.log(dayEvents);
+}
+
 const drawBody = ({ monthIndex, year, events }) => {
   const { dayOfWeek, dayOfWeekIndex } = getFirstDayOfMonth(monthIndex, year);
   let numberOfDays = getDaysInMonth(monthIndex, year);
@@ -90,6 +121,19 @@ const drawBody = ({ monthIndex, year, events }) => {
         eventSpan.setAttribute("class", "js-calendar__body-event-span");
         dayCell.appendChild(eventSpan);
       }
+
+      //Because onclick is async, when click on the calendar cell it is not sure if the eventsFound
+      //is with the correct value. For this reason I am using a closure to capture and to keep
+      //the correct value of the eventsFound and to pass it to the showDayEvents when user click
+      //on date cell of the callendar.
+      dayCell.onclick = (function(eventsFound) {
+        return function(e) {
+          showDayEvents(e, eventsFound);
+        };
+      })(eventsFound);
+
+
+
       // console.log(eventsFound);
       if (i + 1 - dayOfWeekIndex === todayNumber) {
         dayCell.classList.add("class", "js-calendar__body-item__today");
