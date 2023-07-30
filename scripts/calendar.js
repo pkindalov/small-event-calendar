@@ -63,6 +63,10 @@ const createBackdrop = () => {
   return div;
 }
 
+//TODO to implement these later
+function moveToPrevDate(dayEvents) {}
+function moveToNextDate(dayEvents) {}
+
 function showDayEvents(e, dayEvents) {
   const selectedDay = +e.currentTarget.innerText;
   const backgdrop = createBackdrop();
@@ -70,12 +74,86 @@ function showDayEvents(e, dayEvents) {
   const modalWindow = document.createElement("div");
   modalWindow.setAttribute("class", "js-modal-dayEvent");
 
+  //Header part of the modal
+  const modalHeaderCont = document.createElement("div");
+  modalHeaderCont.setAttribute("class", "js-modal-dayEvent__header-cont");
 
+  const prevDayCont = document.createElement("div");
+  prevDayCont.setAttribute("class", "js-modal-dayEvent__header-cont__prev-cont");
+  const prevDayBtn = document.createElement("button");
+  prevDayBtn.setAttribute("class", "js-modal-dayEvent__header-cont__prev-btn");
+  prevDayBtn.innerText = "<";
+  prevDayBtn.onclick = () => moveToPrevDate(dayEvents);
+  prevDayCont.appendChild(prevDayBtn);
+  
+  const currentSelectedDayCont = document.createElement("div");
+  currentSelectedDayCont.setAttribute("class", "js-modal-dayEvent__header-cont__day");
+  currentSelectedDayCont.innerText = selectedDay;
 
+  const nextDayCont = document.createElement("div");
+  nextDayCont.setAttribute("class", "js-modal-dayEvent__header-cont__next-cont");
+  const nextDayBtn = document.createElement("button");
+  nextDayBtn.setAttribute("class", "js-modal-dayEvent__header-cont__next-btn");
+  nextDayBtn.innerText = ">";
+  nextDayBtn.onclick = () => moveToNextDate(dayEvents);
+  nextDayCont.appendChild(nextDayBtn);
 
+  modalHeaderCont.appendChild(prevDayCont);
+  modalHeaderCont.appendChild(currentSelectedDayCont);
+  modalHeaderCont.appendChild(nextDayCont);
+
+  modalWindow.appendChild(modalHeaderCont);
+
+  //Body of the modal
+  const modalBodyCont = document.createElement("div");
+  modalBodyCont.setAttribute("class", "js-modal-dayEvent__body-cont");
+  // console.log(dayEvents);
+  
+  if(dayEvents && dayEvents.length > 0) {
+    const listTaskItemsCont = document.createElement("ul");
+    listTaskItemsCont.setAttribute("class", "js-modal-dayEvent__body-cont__tasks");
+    let taskLi = null;
+    let checkBox = null;
+    
+    dayEvents.forEach(event => {
+      console.log(event);
+      taskLi = document.createElement("li");
+      taskLi.setAttribute("class", "js-modal-dayEvent__body-cont__tasks-item");
+      taskLi.innerText = event.task;
+      checkBox = document.createElement("input");
+      checkBox.setAttribute("type", "checkbox"); // Set the type to "checkbox"
+      checkBox.setAttribute("class", "js-modal-dayEvent__body-cont__tasks-item__checkbox");
+      checkBox.checked = event.checked;
+      // checkBox.setAttribute("checked", event.checked);
+      // taskLi.appendChild(checkBox);
+      // checkBox = document.createElement("checkbox");
+      // checkBox.setAttribute("class", "js-modal-dayEvent__body-cont__tasks-item__checkbox");
+      // checkBox.setAttribute("checked", event.checked);
+      taskLi.prepend(checkBox);
+      listTaskItemsCont.appendChild(taskLi);
+    });
+    modalBodyCont.appendChild(listTaskItemsCont);
+
+  } else {
+    modalBodyCont.innerHTML = "<h3>There are no events for today</h3>";
+  }
+
+  modalWindow.appendChild(modalBodyCont);
   backgdrop.append(modalWindow);
+
+
   // console.log(selectedDay);
   // console.log(dayEvents);
+}
+
+const getCurrentlySelMont = () => {
+  const montSelect = document.getElementsByClassName("js-calendar__controls-month-year-selects_cont__item")[0];
+  return +montSelect.value + 1 < 10 ? "0" + (+montSelect.value + 1) : +montSelect.value + 1;
+}
+
+const getCurrentlySelYear = () => {
+  const yearSelect = document.getElementsByClassName("js-calendar__controls-month-year-selects_cont__item")[1];
+  return yearSelect.value;
 }
 
 const drawBody = ({ monthIndex, year, events }) => {
@@ -126,9 +204,11 @@ const drawBody = ({ monthIndex, year, events }) => {
       //is with the correct value. For this reason I am using a closure to capture and to keep
       //the correct value of the eventsFound and to pass it to the showDayEvents when user click
       //on date cell of the callendar.
-      dayCell.onclick = (function(eventsFound) {
+      dayCell.onclick = (function(eventsFound = {}) {
         return function(e) {
-          showDayEvents(e, eventsFound);
+          const date = +e.currentTarget.innerText < 10 ? "0" + e.currentTarget.innerText : e.currentTarget.innerText;
+          const clickedDate = date + '-' + getCurrentlySelMont() + '-' + getCurrentlySelYear();
+          showDayEvents(e, eventsFound[clickedDate]);
         };
       })(eventsFound);
 

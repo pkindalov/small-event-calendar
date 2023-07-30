@@ -12,6 +12,7 @@
 
 body {
   font-family: "Poppins", "Inter";
+  font-size: 20rem;
 }
 
 .container {
@@ -48,7 +49,9 @@ body {
   display: flex;
 }
 
-.js-calendar__controls-btn {
+.js-calendar__controls-btn,
+.js-modal-dayEvent__header-cont__prev-btn, 
+.js-modal-dayEvent__header-cont__next-btn {
   width: 16.7rem;
   font-size: 2.5rem;
   background: none;
@@ -56,7 +59,8 @@ body {
   cursor: pointer;
 }
 
-.js-calendar__controls-month-year-selects_cont {
+.js-calendar__controls-month-year-selects_cont,
+.js-modal-dayEvent__header-cont__day {
   /* border: 1px solid red; */
   flex: 1;
   display: flex;
@@ -182,4 +186,58 @@ body {
   top: 0;
   left: 0;
   background-color: rgba(255, 255, 255, 0.9); */
+}
+
+.js-modal-dayEvent__header-cont,
+.js-modal-dayEvent__body-cont {
+  display: flex;
+  justify-content: center;
+  margin: 3rem auto;
+  max-width: 80%;
+  background-color: #fff;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.js-modal-dayEvent__header-cont__prev-btn,
+.js-modal-dayEvent__header-cont__next-btn {
+  height: 100%;
+}
+
+
+
+
+.js-modal-dayEvent__body-cont__tasks {
+  list-style: none; /* Remove default list styles */
+  padding: 0; /* Remove default padding */
+}
+
+.js-modal-dayEvent__body-cont__tasks-item {
+  display: flex; /* Display the list items in a row */
+  align-items: center; /* Vertically center the content */
+  margin-bottom: 8px; /* Add some spacing between items */
+  font-size: 16px; /* Adjust font size as needed */
+}
+
+.js-modal-dayEvent__body-cont__tasks-item__checkbox {
+  appearance: none; /* Hide default checkbox */
+  -webkit-appearance: none; /* For Safari/WebKit browsers */
+  width: 18px; /* Set the width of the custom checkbox */
+  height: 18px; /* Set the height of the custom checkbox */
+  border: 2px solid #ccc; /* Add a border to the custom checkbox */
+  border-radius: 4px; /* Rounded corners for the custom checkbox */
+  margin-right: 8px; /* Add some spacing between checkbox and text */
+  cursor: pointer; /* Show a pointer cursor on hover */
+}
+
+/* Style the custom checkbox when it's checked */
+.js-modal-dayEvent__body-cont__tasks-item__checkbox:checked {
+  background-color: #007bff; /* Add a background color when checked */
+  border-color: #007bff; /* Update the border color when checked */
+}
+
+/* Style the custom checkbox when it's checked and hovered */
+.js-modal-dayEvent__body-cont__tasks-item__checkbox:checked:hover {
+  background-color: #0056b3; /* Darker background color on hover when checked */
+  border-color: #0056b3; /* Darker border color on hover when checked */
 }
