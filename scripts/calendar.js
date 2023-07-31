@@ -64,11 +64,35 @@ const createBackdrop = () => {
 }
 
 //TODO to implement these later
-function moveToPrevDate(dayEvents) {}
-function moveToNextDate(dayEvents) {}
+function moveToPrevDate(e, dayEvents) {
+  // console.log(dayEvents);
+  const dateInp = document.getElementsByClassName("js-modal-dayEvent__header-cont__day")[0];
+  let date = (+dateInp.innerText) - 1;
+  let lookingDate = date < 10 ? "0" + date : date;
+  const month = getCurrentlySelMont();
+  const year = getCurrentlySelYear();
+  lookingDate = date + "-" + month + "-" + year;
+  showDayEvents(date, dayEvents);
+}
+function moveToNextDate(е, dayEvents) {}
 
-function showDayEvents(e, dayEvents) {
-  const selectedDay = +e.currentTarget.innerText;
+const removeOldBackDrop = () => {
+  const backdrop = document.getElementsByClassName("js-backdrop")[0];
+  backdrop?.remove();
+}
+
+function showDayEvents(selectedDay, dayEvents = []) {
+  if(+selectedDay <= 0) return;
+  //TODO to implement function to get last day of the month and to make check
+  //to not pass the last day, for example to not continue after the last day of the
+  //current month
+  removeOldBackDrop();
+  // const selectedDay = date;
+  const selectedDate = (+selectedDay < 10 ? "0" + selectedDay : selectedDay) + '-' + getCurrentlySelMont() + '-' + getCurrentlySelYear();
+  // let filteredEvents = dayEvents[selectedDate] ? dayEvents[selectedDate] : [];
+  let filteredEvents = dayEvents.find((event) => event[selectedDate]);
+  if(filteredEvents && Object.keys(filteredEvents).length > 0) filteredEvents = filteredEvents[selectedDate];
+
   const backgdrop = createBackdrop();
   document.body.prepend(backgdrop);
   const modalWindow = document.createElement("div");
@@ -83,7 +107,7 @@ function showDayEvents(e, dayEvents) {
   const prevDayBtn = document.createElement("button");
   prevDayBtn.setAttribute("class", "js-modal-dayEvent__header-cont__prev-btn");
   prevDayBtn.innerText = "<";
-  prevDayBtn.onclick = () => moveToPrevDate(dayEvents);
+  prevDayBtn.onclick = (e) => moveToPrevDate(e,dayEvents)
   prevDayCont.appendChild(prevDayBtn);
   
   const currentSelectedDayCont = document.createElement("div");
@@ -109,13 +133,13 @@ function showDayEvents(e, dayEvents) {
   modalBodyCont.setAttribute("class", "js-modal-dayEvent__body-cont");
   // console.log(dayEvents);
   
-  if(dayEvents && dayEvents.length > 0) {
+  if(filteredEvents && filteredEvents.length > 0) {
     const listTaskItemsCont = document.createElement("ul");
     listTaskItemsCont.setAttribute("class", "js-modal-dayEvent__body-cont__tasks");
     let taskLi = null;
     let checkBox = null;
     
-    dayEvents.forEach(event => {
+    filteredEvents.forEach(event => {
       console.log(event);
       taskLi = document.createElement("li");
       taskLi.setAttribute("class", "js-modal-dayEvent__body-cont__tasks-item");
@@ -190,27 +214,27 @@ const drawBody = ({ monthIndex, year, events }) => {
         (monthIndex + 1 < 10 ? "0" + (monthIndex + 1) : monthIndex + 1) +
         "-" +
         year;
-      // eventsFound = events[0][date];
       eventsFound = events.find((event) => event[date]);
-      //  events[0][date];
-      // console.log(date + " =>" + eventsFound);
       if (eventsFound) {
         eventSpan = document.createElement("span");
         eventSpan.setAttribute("class", "js-calendar__body-event-span");
         dayCell.appendChild(eventSpan);
       }
 
-      //Because onclick is async, when click on the calendar cell it is not sure if the eventsFound
+      //Because , when click on the calendar cell filtering of the event can not finished yet it is not sure if the eventsFound
       //is with the correct value. For this reason I am using a closure to capture and to keep
       //the correct value of the eventsFound and to pass it to the showDayEvents when user click
       //on date cell of the callendar.
-      dayCell.onclick = (function(eventsFound = {}) {
-        return function(e) {
-          const date = +e.currentTarget.innerText < 10 ? "0" + e.currentTarget.innerText : e.currentTarget.innerText;
-          const clickedDate = date + '-' + getCurrentlySelMont() + '-' + getCurrentlySelYear();
-          showDayEvents(e, eventsFound[clickedDate]);
-        };
-      })(eventsFound);
+      // dayCell.onclick = (function(events = {}) {
+      //   return function(e) {
+      //     const date = +e.currentTarget.innerText < 10 ? "0" + e.currentTarget.innerText : e.currentTarget.innerText;
+      //     showDayEvents(date, events);
+      //   };
+      // })(events);
+      dayCell.onclick = (e) => {
+        const date = e.currentTarget.innerText;
+        showDayEvents(date, events);
+      }
 
 
 
