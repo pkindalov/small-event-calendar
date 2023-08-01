@@ -63,9 +63,7 @@ const createBackdrop = () => {
   return div;
 }
 
-//TODO to implement these later
-function moveToPrevDate(e, dayEvents) {
-  // console.log(dayEvents);
+function moveToPrevDate(dayEvents) {
   const dateInp = document.getElementsByClassName("js-modal-dayEvent__header-cont__day")[0];
   let date = (+dateInp.innerText) - 1;
   let lookingDate = date < 10 ? "0" + date : date;
@@ -74,15 +72,31 @@ function moveToPrevDate(e, dayEvents) {
   lookingDate = date + "-" + month + "-" + year;
   showDayEvents(date, dayEvents);
 }
-function moveToNextDate(е, dayEvents) {}
+function moveToNextDate(dayEvents) {
+  const dateInp = document.getElementsByClassName("js-modal-dayEvent__header-cont__day")[0];
+  let date = (+dateInp.innerText) + 1;
+  let lookingDate = date < 10 ? "0" + date : date;
+  const month = getCurrentlySelMont();
+  const year = getCurrentlySelYear();
+  lookingDate = date + "-" + month + "-" + year;
+  showDayEvents(date, dayEvents);
+}
 
 const removeOldBackDrop = () => {
   const backdrop = document.getElementsByClassName("js-backdrop")[0];
   backdrop?.remove();
 }
 
+const getLastDayOfTheMonthNum = () => {
+  const monthIndex = +document.getElementsByClassName("js-calendar__controls-month-year-selects_cont__item")[0].value;
+  const year = +document.getElementsByClassName("js-calendar__controls-month-year-selects_cont__item")[1].value;
+  const lastDayOfMonth = new Date(year, monthIndex + 1, 0);
+  return +lastDayOfMonth.getDate();
+}
+
 function showDayEvents(selectedDay, dayEvents = []) {
-  if(+selectedDay <= 0) return;
+  selectedDay = +selectedDay;
+  if(selectedDay <= 0 || selectedDay > getLastDayOfTheMonthNum()) return;
   //TODO to implement function to get last day of the month and to make check
   //to not pass the last day, for example to not continue after the last day of the
   //current month
@@ -107,7 +121,7 @@ function showDayEvents(selectedDay, dayEvents = []) {
   const prevDayBtn = document.createElement("button");
   prevDayBtn.setAttribute("class", "js-modal-dayEvent__header-cont__prev-btn");
   prevDayBtn.innerText = "<";
-  prevDayBtn.onclick = (e) => moveToPrevDate(e,dayEvents)
+  prevDayBtn.onclick = () => moveToPrevDate(dayEvents)
   prevDayCont.appendChild(prevDayBtn);
   
   const currentSelectedDayCont = document.createElement("div");
@@ -140,7 +154,6 @@ function showDayEvents(selectedDay, dayEvents = []) {
     let checkBox = null;
     
     filteredEvents.forEach(event => {
-      console.log(event);
       taskLi = document.createElement("li");
       taskLi.setAttribute("class", "js-modal-dayEvent__body-cont__tasks-item");
       taskLi.innerText = event.task;
@@ -148,11 +161,6 @@ function showDayEvents(selectedDay, dayEvents = []) {
       checkBox.setAttribute("type", "checkbox"); // Set the type to "checkbox"
       checkBox.setAttribute("class", "js-modal-dayEvent__body-cont__tasks-item__checkbox");
       checkBox.checked = event.checked;
-      // checkBox.setAttribute("checked", event.checked);
-      // taskLi.appendChild(checkBox);
-      // checkBox = document.createElement("checkbox");
-      // checkBox.setAttribute("class", "js-modal-dayEvent__body-cont__tasks-item__checkbox");
-      // checkBox.setAttribute("checked", event.checked);
       taskLi.prepend(checkBox);
       listTaskItemsCont.appendChild(taskLi);
     });
@@ -164,10 +172,6 @@ function showDayEvents(selectedDay, dayEvents = []) {
 
   modalWindow.appendChild(modalBodyCont);
   backgdrop.append(modalWindow);
-
-
-  // console.log(selectedDay);
-  // console.log(dayEvents);
 }
 
 const getCurrentlySelMont = () => {
