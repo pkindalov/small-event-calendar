@@ -49,8 +49,8 @@ function getDaysInMonth(monthIndex, year) {
 
 const closeBackdrop = () => {
   const backdrops = document.getElementsByClassName("js-backdrop");
-  Array.from(backdrops).forEach(backdrop => backdrop.remove());
-}
+  Array.from(backdrops).forEach((backdrop) => backdrop.remove());
+};
 
 const createBackdrop = () => {
   const div = document.createElement("div");
@@ -61,11 +61,13 @@ const createBackdrop = () => {
   closeBackdropBtn.onclick = () => closeBackdrop();
   div.append(closeBackdropBtn);
   return div;
-}
+};
 
 function moveToPrevDate(dayEvents) {
-  const dateInp = document.getElementsByClassName("js-modal-dayEvent__header-cont__day")[0];
-  let date = (+dateInp.innerText) - 1;
+  const dateInp = document.getElementsByClassName(
+    "js-modal-dayEvent__header-cont__day"
+  )[0];
+  let date = +dateInp.innerText - 1;
   let lookingDate = date < 10 ? "0" + date : date;
   const month = getCurrentlySelMont();
   const year = getCurrentlySelYear();
@@ -73,8 +75,10 @@ function moveToPrevDate(dayEvents) {
   showDayEvents(date, dayEvents);
 }
 function moveToNextDate(dayEvents) {
-  const dateInp = document.getElementsByClassName("js-modal-dayEvent__header-cont__day")[0];
-  let date = (+dateInp.innerText) + 1;
+  const dateInp = document.getElementsByClassName(
+    "js-modal-dayEvent__header-cont__day"
+  )[0];
+  let date = +dateInp.innerText + 1;
   let lookingDate = date < 10 ? "0" + date : date;
   const month = getCurrentlySelMont();
   const year = getCurrentlySelYear();
@@ -85,27 +89,37 @@ function moveToNextDate(dayEvents) {
 const removeOldBackDrop = () => {
   const backdrop = document.getElementsByClassName("js-backdrop")[0];
   backdrop?.remove();
-}
+};
 
 const getLastDayOfTheMonthNum = () => {
-  const monthIndex = +document.getElementsByClassName("js-calendar__controls-month-year-selects_cont__item")[0].value;
-  const year = +document.getElementsByClassName("js-calendar__controls-month-year-selects_cont__item")[1].value;
+  const monthIndex = +document.getElementsByClassName(
+    "js-calendar__controls-month-year-selects_cont__item"
+  )[0].value;
+  const year = +document.getElementsByClassName(
+    "js-calendar__controls-month-year-selects_cont__item"
+  )[1].value;
   const lastDayOfMonth = new Date(year, monthIndex + 1, 0);
   return +lastDayOfMonth.getDate();
-}
+};
 
 function showDayEvents(selectedDay, dayEvents = []) {
   selectedDay = +selectedDay;
-  if(selectedDay <= 0 || selectedDay > getLastDayOfTheMonthNum()) return;
+  if (selectedDay <= 0 || selectedDay > getLastDayOfTheMonthNum()) return;
   //TODO to implement function to get last day of the month and to make check
   //to not pass the last day, for example to not continue after the last day of the
   //current month
   removeOldBackDrop();
   // const selectedDay = date;
-  const selectedDate = (+selectedDay < 10 ? "0" + selectedDay : selectedDay) + '-' + getCurrentlySelMont() + '-' + getCurrentlySelYear();
+  const selectedDate =
+    (+selectedDay < 10 ? "0" + selectedDay : selectedDay) +
+    "-" +
+    getCurrentlySelMont() +
+    "-" +
+    getCurrentlySelYear();
   // let filteredEvents = dayEvents[selectedDate] ? dayEvents[selectedDate] : [];
   let filteredEvents = dayEvents.find((event) => event[selectedDate]);
-  if(filteredEvents && Object.keys(filteredEvents).length > 0) filteredEvents = filteredEvents[selectedDate];
+  if (filteredEvents && Object.keys(filteredEvents).length > 0)
+    filteredEvents = filteredEvents[selectedDate];
 
   const backgdrop = createBackdrop();
   document.body.prepend(backgdrop);
@@ -117,19 +131,28 @@ function showDayEvents(selectedDay, dayEvents = []) {
   modalHeaderCont.setAttribute("class", "js-modal-dayEvent__header-cont");
 
   const prevDayCont = document.createElement("div");
-  prevDayCont.setAttribute("class", "js-modal-dayEvent__header-cont__prev-cont");
+  prevDayCont.setAttribute(
+    "class",
+    "js-modal-dayEvent__header-cont__prev-cont"
+  );
   const prevDayBtn = document.createElement("button");
   prevDayBtn.setAttribute("class", "js-modal-dayEvent__header-cont__prev-btn");
   prevDayBtn.innerText = "<";
-  prevDayBtn.onclick = () => moveToPrevDate(dayEvents)
+  prevDayBtn.onclick = () => moveToPrevDate(dayEvents);
   prevDayCont.appendChild(prevDayBtn);
-  
+
   const currentSelectedDayCont = document.createElement("div");
-  currentSelectedDayCont.setAttribute("class", "js-modal-dayEvent__header-cont__day");
+  currentSelectedDayCont.setAttribute(
+    "class",
+    "js-modal-dayEvent__header-cont__day"
+  );
   currentSelectedDayCont.innerText = selectedDay;
 
   const nextDayCont = document.createElement("div");
-  nextDayCont.setAttribute("class", "js-modal-dayEvent__header-cont__next-cont");
+  nextDayCont.setAttribute(
+    "class",
+    "js-modal-dayEvent__header-cont__next-cont"
+  );
   const nextDayBtn = document.createElement("button");
   nextDayBtn.setAttribute("class", "js-modal-dayEvent__header-cont__next-btn");
   nextDayBtn.innerText = ">";
@@ -146,26 +169,31 @@ function showDayEvents(selectedDay, dayEvents = []) {
   const modalBodyCont = document.createElement("div");
   modalBodyCont.setAttribute("class", "js-modal-dayEvent__body-cont");
   // console.log(dayEvents);
-  
-  if(filteredEvents && filteredEvents.length > 0) {
+
+  if (filteredEvents && filteredEvents.length > 0) {
     const listTaskItemsCont = document.createElement("ul");
-    listTaskItemsCont.setAttribute("class", "js-modal-dayEvent__body-cont__tasks");
+    listTaskItemsCont.setAttribute(
+      "class",
+      "js-modal-dayEvent__body-cont__tasks"
+    );
     let taskLi = null;
     let checkBox = null;
-    
-    filteredEvents.forEach(event => {
+
+    filteredEvents.forEach((event) => {
       taskLi = document.createElement("li");
       taskLi.setAttribute("class", "js-modal-dayEvent__body-cont__tasks-item");
       taskLi.innerText = event.task;
       checkBox = document.createElement("input");
       checkBox.setAttribute("type", "checkbox"); // Set the type to "checkbox"
-      checkBox.setAttribute("class", "js-modal-dayEvent__body-cont__tasks-item__checkbox");
+      checkBox.setAttribute(
+        "class",
+        "js-modal-dayEvent__body-cont__tasks-item__checkbox"
+      );
       checkBox.checked = event.checked;
       taskLi.prepend(checkBox);
       listTaskItemsCont.appendChild(taskLi);
     });
     modalBodyCont.appendChild(listTaskItemsCont);
-
   } else {
     modalBodyCont.innerHTML = "<h3>There are no events for today</h3>";
   }
@@ -175,14 +203,20 @@ function showDayEvents(selectedDay, dayEvents = []) {
 }
 
 const getCurrentlySelMont = () => {
-  const montSelect = document.getElementsByClassName("js-calendar__controls-month-year-selects_cont__item")[0];
-  return +montSelect.value + 1 < 10 ? "0" + (+montSelect.value + 1) : +montSelect.value + 1;
-}
+  const montSelect = document.getElementsByClassName(
+    "js-calendar__controls-month-year-selects_cont__item"
+  )[0];
+  return +montSelect.value + 1 < 10
+    ? "0" + (+montSelect.value + 1)
+    : +montSelect.value + 1;
+};
 
 const getCurrentlySelYear = () => {
-  const yearSelect = document.getElementsByClassName("js-calendar__controls-month-year-selects_cont__item")[1];
+  const yearSelect = document.getElementsByClassName(
+    "js-calendar__controls-month-year-selects_cont__item"
+  )[1];
   return yearSelect.value;
-}
+};
 
 const drawBody = ({ monthIndex, year, events }) => {
   const { dayOfWeek, dayOfWeekIndex } = getFirstDayOfMonth(monthIndex, year);
@@ -238,9 +272,7 @@ const drawBody = ({ monthIndex, year, events }) => {
       dayCell.onclick = (e) => {
         const date = e.currentTarget.innerText;
         showDayEvents(date, events);
-      }
-
-
+      };
 
       // console.log(eventsFound);
       if (i + 1 - dayOfWeekIndex === todayNumber) {

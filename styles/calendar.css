@@ -50,7 +50,7 @@ body {
 }
 
 .js-calendar__controls-btn,
-.js-modal-dayEvent__header-cont__prev-btn, 
+.js-modal-dayEvent__header-cont__prev-btn,
 .js-modal-dayEvent__header-cont__next-btn {
   width: 16.7rem;
   font-size: 2.5rem;
@@ -112,7 +112,7 @@ body {
   cursor: pointer;
 }
 
-.js-calendar__body-empty{
+.js-calendar__body-empty {
   border: 0;
 }
 
@@ -135,7 +135,7 @@ body {
   background-color: #fff;
 }
 
-.js-backdrop{
+.js-backdrop {
   background: rgba(0, 0, 0, 0.5); /* Semi-transparent black backdrop */
   position: fixed;
   top: 0;
@@ -203,9 +203,6 @@ body {
 .js-modal-dayEvent__header-cont__next-btn {
   height: 100%;
 }
-
-
-
 
 .js-modal-dayEvent__body-cont__tasks {
   list-style: none; /* Remove default list styles */
