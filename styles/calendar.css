@@ -200,7 +200,7 @@ body {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.js-modal-dayEvent__body-cont{
+.js-modal-dayEvent__body-cont {
   flex-direction: column;
   text-align: center;
 }
@@ -253,21 +253,21 @@ body {
   margin-bottom: 4rem;
 }
 
-.js-modal-dayEvent__tabs-events{
+.js-modal-dayEvent__tabs-events {
   border: 1px solid black;
   max-width: 100%;
   width: 100%;
-    /* display: flex;
+  /* display: flex;
     flex-direction: column; */
-    background: none;
-    justify-content: center;
-    align-items: center;
-    /* height: var(--calendar-cell__height) / 2; */
-    height: var(--calendar-cell__height);
-    text-align: center;
-    font-size: 1.4rem;
-    padding: 0.5rem;
-    cursor: pointer;
+  background: none;
+  justify-content: center;
+  align-items: center;
+  /* height: var(--calendar-cell__height) / 2; */
+  height: var(--calendar-cell__height);
+  text-align: center;
+  font-size: 1.4rem;
+  padding: 0.5rem;
+  cursor: pointer;
 }
 
 .js-tab__button--active {
@@ -275,7 +275,7 @@ body {
   color: #fff;
 }
 
-.js-tab--hidden{
+.js-tab--hidden {
   display: none;
 }
 
