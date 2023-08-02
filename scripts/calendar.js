@@ -102,14 +102,60 @@ const getLastDayOfTheMonthNum = () => {
   return +lastDayOfMonth.getDate();
 };
 
+const showEventsCont = (e) => {
+  //make current clicked btn active
+  const currentBnt = e.currentTarget;
+  if(!currentBnt.classList.contains("js-tab__button--active")) {
+    currentBnt.classList.add("js-tab__button--active");
+  }
+  const addEventTabBtn = document.getElementsByClassName("js-modal-dayEvent__tabs-events")[1];
+  if(addEventTabBtn.classList.contains("js-tab__button--active")) {
+    addEventTabBtn.classList.remove("js-tab__button--active");
+  }
+  
+  //hide add event form cont visible
+  const addEventsCont = document.getElementsByClassName("js-events-cont__add-events")[0];
+  if(!addEventsCont.classList.contains("js-tab--hidden")) {
+    addEventsCont.classList.add("js-tab--hidden");
+  }
+
+  //show the events cont
+  const eventsCont = document.getElementsByClassName("js-events-cont__events")[0];
+  if(eventsCont.classList.contains("js-tab--hidden")) {
+    eventsCont.classList.remove("js-tab--hidden");
+  }
+
+}
+
+const showAddEventCont = (e) => {
+  //make current clicked btn active
+  const currentBnt = e.currentTarget;
+  if(!currentBnt.classList.contains("js-tab__button--active")) {
+    currentBnt.classList.add("js-tab__button--active");
+  }
+
+  //make event container btn inactive
+  const eventContTabBtn = document.getElementsByClassName("js-modal-dayEvent__tabs-events")[0];
+  if(eventContTabBtn.classList.contains("js-tab__button--active")) {
+    eventContTabBtn.classList.remove("js-tab__button--active");
+  }
+
+  //hide the events cont
+  const eventsCont = document.getElementsByClassName("js-events-cont__events")[0];
+  if(!eventsCont.classList.contains("js-tab--hidden")) {
+    eventsCont.classList.add("js-tab--hidden");
+  }
+  //makes add event form cont visible
+  const addEventsCont = document.getElementsByClassName("js-events-cont__add-events")[0];
+  if(addEventsCont.classList.contains("js-tab--hidden")) {
+    addEventsCont.classList.remove("js-tab--hidden");
+  }
+}
+
 function showDayEvents(selectedDay, dayEvents = []) {
   selectedDay = +selectedDay;
   if (selectedDay <= 0 || selectedDay > getLastDayOfTheMonthNum()) return;
-  //TODO to implement function to get last day of the month and to make check
-  //to not pass the last day, for example to not continue after the last day of the
-  //current month
   removeOldBackDrop();
-  // const selectedDay = date;
   const selectedDate =
     (+selectedDay < 10 ? "0" + selectedDay : selectedDay) +
     "-" +
@@ -168,7 +214,51 @@ function showDayEvents(selectedDay, dayEvents = []) {
   //Body of the modal
   const modalBodyCont = document.createElement("div");
   modalBodyCont.setAttribute("class", "js-modal-dayEvent__body-cont");
-  // console.log(dayEvents);
+
+  //Modal Container
+  const modalTabCont = document.createElement("div");
+  modalTabCont.setAttribute("class", "js-modal-dayEvent__tabs-cont");
+  modalTabCont.setAttribute("id", "js-modal-dayEvent-" + selectedDay);
+
+  //events tab - button
+  const buttonEventsTab = document.createElement('button');
+  buttonEventsTab.setAttribute("class", "js-modal-dayEvent__tabs-events js-tab__button--active");
+  buttonEventsTab.setAttribute("id", "js-modal-dayEvent__tabs-events-"+selectedDay);
+  buttonEventsTab.innerText = "Events";
+  buttonEventsTab.onclick = (e) => showEventsCont(e);
+
+
+  //events - container
+  const eventsTabCont = document.createElement("div");
+  eventsTabCont.setAttribute("id", "js-events-cont__events");
+  eventsTabCont.setAttribute("class", "js-events-cont__events");
+
+
+  //add event tab - button
+  const buttonAddEventTab = document.createElement('button');
+  buttonAddEventTab.setAttribute("class", "js-modal-dayEvent__tabs-events");
+  buttonAddEventTab.setAttribute("id", "js-modal-dayEvent__tabs-addEvents-"+selectedDay);
+  buttonAddEventTab.innerText = "Add Event";
+  buttonAddEventTab.onclick = (e) => showAddEventCont(e);
+
+  //add event tab - container
+  const addEventTabCont = document.createElement("div");
+  addEventTabCont.setAttribute("id", "js-events-cont__add-events");
+  addEventTabCont.setAttribute("class", "js-events-cont__add-events js-tab--hidden");
+  addEventTabCont.innerText = "Add event form here";
+  
+
+
+
+
+
+
+  modalTabCont.appendChild(buttonEventsTab);
+  modalTabCont.appendChild(buttonAddEventTab);
+  modalBodyCont.appendChild(modalTabCont);
+  modalBodyCont.appendChild(eventsTabCont);
+  modalBodyCont.appendChild(addEventTabCont);
+
 
   if (filteredEvents && filteredEvents.length > 0) {
     const listTaskItemsCont = document.createElement("ul");
@@ -193,9 +283,11 @@ function showDayEvents(selectedDay, dayEvents = []) {
       taskLi.prepend(checkBox);
       listTaskItemsCont.appendChild(taskLi);
     });
-    modalBodyCont.appendChild(listTaskItemsCont);
+    // modalBodyCont.appendChild(listTaskItemsCont);
+    eventsTabCont.appendChild(listTaskItemsCont);
   } else {
-    modalBodyCont.innerHTML = "<h3>There are no events for today</h3>";
+    // modalBodyCont.innerHTML += "<h3>There are no events for today</h3>";
+    eventsTabCont.innerHTML += "<h3>There are no events for today</h3>";
   }
 
   modalWindow.appendChild(modalBodyCont);
