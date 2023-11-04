@@ -256,6 +256,12 @@ function createAddEventForm({selectedDay, selectedDate, events}) {
     return formCont;
 }
 
+function updateEventStatus(checkBoxId, eventForUpdate) {
+    const checkBox = document.getElementById(checkBoxId);
+    eventForUpdate.checked = !eventForUpdate.checked;
+    checkBox.checked = eventForUpdate.checked;
+}
+
 function showDayEvents(selectedDay, events = []) {
     selectedDay = +selectedDay;
     if (selectedDay <= 0 || selectedDay > getLastDayOfTheMonthNum()) return;
@@ -361,7 +367,6 @@ function showDayEvents(selectedDay, events = []) {
     );
     addEventTabCont.innerText = "Add event form here";
 
-    //TODO to make add event form here. To make in new function
     addEventTabCont.appendChild(createAddEventForm({selectedDay, selectedDate, events}));
 
 
@@ -380,7 +385,8 @@ function showDayEvents(selectedDay, events = []) {
         let taskLi = null;
         let checkBox = null;
 
-        filteredEvents.forEach((event) => {
+        filteredEvents.forEach((event, index) => {
+            const checkId = "js-modal-dayEvent__body-cont__tasks-item-" + index;
             taskLi = document.createElement("li");
             taskLi.setAttribute("class", "js-modal-dayEvent__body-cont__tasks-item");
             taskLi.innerText = event.task;
@@ -390,9 +396,11 @@ function showDayEvents(selectedDay, events = []) {
                 "class",
                 "js-modal-dayEvent__body-cont__tasks-item__checkbox"
             );
+            checkBox.setAttribute("id", checkId);
             checkBox.checked = event.checked;
-            // TODO: add event listener to checkbox to update event when user click on checkbox to mark it
-            //   finished or not
+            const eventForUpdate = event;
+            if (!checkBox.hasListener)
+                checkBox.addEventListener('click', () => updateEventStatus(checkId, eventForUpdate));
             taskLi.prepend(checkBox);
             listTaskItemsCont.appendChild(taskLi);
         });
