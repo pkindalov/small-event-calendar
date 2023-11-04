@@ -278,6 +278,13 @@ function showDayEvents(selectedDay, events = []) {
         filteredEvents = filteredEvents[selectedDate];
 
     const backgdrop = createBackdrop();
+    const modalsIdToClose = ['js-modal-dayEvent', 'js-backdrop'];
+    backgdrop.addEventListener('click', (event) => {
+        if (modalsIdToClose.includes(event.target.getAttribute('class'))) {
+            closeBackdrop();
+            modalWindow.remove();
+        }
+    });
     document.body.prepend(backgdrop);
     const modalWindow = document.createElement("div");
     modalWindow.setAttribute("class", "js-modal-dayEvent");
