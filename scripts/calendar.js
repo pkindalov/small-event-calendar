@@ -394,9 +394,11 @@ function showDayEvents(selectedDay, events = []) {
 
         filteredEvents.forEach((event, index) => {
             const checkId = "js-modal-dayEvent__body-cont__tasks-item-" + index;
+            const checkLabel = document.createElement("label");
+            checkLabel.setAttribute("for", checkId);
+            checkLabel.innerText = event.task;
             taskLi = document.createElement("li");
             taskLi.setAttribute("class", "js-modal-dayEvent__body-cont__tasks-item");
-            taskLi.innerText = event.task;
             checkBox = document.createElement("input");
             checkBox.setAttribute("type", "checkbox"); // Set the type to "checkbox"
             checkBox.setAttribute(
@@ -408,7 +410,7 @@ function showDayEvents(selectedDay, events = []) {
             const eventForUpdate = event;
             if (!checkBox.hasListener)
                 checkBox.addEventListener('click', () => updateEventStatus(checkId, eventForUpdate));
-            taskLi.prepend(checkBox);
+            taskLi.prepend(checkBox, checkLabel);
             listTaskItemsCont.appendChild(taskLi);
         });
         // modalBodyCont.appendChild(listTaskItemsCont);
