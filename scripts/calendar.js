@@ -163,7 +163,99 @@ const showAddEventCont = (e) => {
   }
 };
 
-function showDayEvents(selectedDay, dayEvents = []) {
+function createAddEventForm({selectedDay, selectedDate, events}) {
+  let formCont = document.createElement("div");
+  formCont.setAttribute("class", "js-events-cont__add-events__form");
+  formCont.setAttribute("id", "js-events-cont__add-events__form-"+selectedDate);
+
+  //first tow of the form with task input
+  let formControlDiv = document.createElement("div");
+  formControlDiv.setAttribute("class", "js-events-cont__add-events__form-control");
+
+  let label = document.createElement("label");
+  label.setAttribute("class", "js-events-cont__add-events__form__label");
+  label.setAttribute("id", "js-events-cont__add-events__form__input-task");
+  label.innerText = "Task: ";
+  
+  let taskInput = document.createElement("input");
+  taskInput.setAttribute("class", "js-events-cont__add-events__form__input");
+  taskInput.setAttribute("id", "js-events-cont__add-events__form__input-task");
+  taskInput.setAttribute("type", "text");
+  taskInput.setAttribute("required", "required");
+
+  formControlDiv.appendChild(label);
+  formControlDiv.appendChild(taskInput);
+  formCont.appendChild(formControlDiv);
+
+  //second row of the form with checkbox
+  formControlDiv = document.createElement("div");
+  formControlDiv.setAttribute("class", "js-events-cont__add-events__form-control");
+  
+
+  label = document.createElement("label");
+  label.setAttribute("class", "js-events-cont__add-events__form__label");
+  label.setAttribute("id", "js-events-cont__add-events__form__check-task");
+  label.innerText = "Is Event Finished: ";
+
+  let taskCheckBox = document.createElement("input");
+  taskCheckBox.setAttribute("type", "checkbox");
+  taskCheckBox.setAttribute("class", "js-events-cont__add-events__form__check")
+  taskCheckBox.setAttribute("id", "js-events-cont__add-events__form__check-task");
+
+  //put elements into containers 
+  formControlDiv.appendChild(label);
+  formControlDiv.appendChild(taskCheckBox);
+  formCont.appendChild(formControlDiv);
+
+  formControlDiv = document.createElement("div");
+  formControlDiv.setAttribute("class", "js-events-cont__add-events__form-control");
+  
+  const addBtn = document.createElement("button");
+  addBtn.setAttribute("class", "js-events-cont__add-events__form__btn");
+  addBtn.setAttribute("id", "js-events-cont__add-events__form__add-btn");
+  addBtn.innerText = "Add";
+  addBtn.onclick = (e) => {
+    let filteredEvents = events.find((event) => event[selectedDate]);
+    const monthIndex = +getCurrentlySelMont() - 1;
+    const year =getCurrentlySelYear();
+    //check if there is a record for selected date
+    if (filteredEvents && Object.keys(filteredEvents).length > 0) {
+      console.log("record exists");
+      console.log(filteredEvents);
+      console.log(filteredEvents[selectedDate]);
+      filteredEvents[selectedDate].push({
+        task: taskInput.value,
+        checked: taskCheckBox.checked
+      });
+      console.log(monthIndex);
+      drawBody({monthIndex, year, events});
+      showDayEvents(selectedDay, events);
+      // closeBackdrop();
+      return;
+    }
+    
+    const newRecord = {[selectedDate]: []};
+    newRecord[selectedDate] = [{
+      task: taskInput.value,
+      checked: taskCheckBox.checked
+    }];
+    events.push(newRecord);
+    drawBody({monthIndex, year, events});
+    showDayEvents(selectedDay, events);
+    // closeBackdrop();
+    // showDayEvents()
+  }
+
+  formControlDiv.appendChild(addBtn);
+  formCont.appendChild(formControlDiv);
+
+
+  // console.log(selectedDate);
+  // console.log(events);
+  return formCont;
+}
+
+function showDayEvents(selectedDay, events = []) {
   selectedDay = +selectedDay;
   if (selectedDay <= 0 || selectedDay > getLastDayOfTheMonthNum()) return;
   removeOldBackDrop();
@@ -173,8 +265,8 @@ function showDayEvents(selectedDay, dayEvents = []) {
     getCurrentlySelMont() +
     "-" +
     getCurrentlySelYear();
-  // let filteredEvents = dayEvents[selectedDate] ? dayEvents[selectedDate] : [];
-  let filteredEvents = dayEvents.find((event) => event[selectedDate]);
+  // let filteredEvents = events[selectedDate] ? events[selectedDate] : [];
+  let filteredEvents = events.find((event) => event[selectedDate]);
   if (filteredEvents && Object.keys(filteredEvents).length > 0)
     filteredEvents = filteredEvents[selectedDate];
 
@@ -195,7 +287,7 @@ function showDayEvents(selectedDay, dayEvents = []) {
   const prevDayBtn = document.createElement("button");
   prevDayBtn.setAttribute("class", "js-modal-dayEvent__header-cont__prev-btn");
   prevDayBtn.innerText = "<";
-  prevDayBtn.onclick = () => moveToPrevDate(dayEvents);
+  prevDayBtn.onclick = () => moveToPrevDate(events);
   prevDayCont.appendChild(prevDayBtn);
 
   const currentSelectedDayCont = document.createElement("div");
@@ -213,7 +305,7 @@ function showDayEvents(selectedDay, dayEvents = []) {
   const nextDayBtn = document.createElement("button");
   nextDayBtn.setAttribute("class", "js-modal-dayEvent__header-cont__next-btn");
   nextDayBtn.innerText = ">";
-  nextDayBtn.onclick = () => moveToNextDate(dayEvents);
+  nextDayBtn.onclick = () => moveToNextDate(events);
   nextDayCont.appendChild(nextDayBtn);
 
   modalHeaderCont.appendChild(prevDayCont);
@@ -267,6 +359,11 @@ function showDayEvents(selectedDay, dayEvents = []) {
     "js-events-cont__add-events js-tab--hidden"
   );
   addEventTabCont.innerText = "Add event form here";
+
+  //TODO to make add event form here. To make in new function
+  addEventTabCont.appendChild(createAddEventForm({selectedDay, selectedDate, events}));
+
+
 
   modalTabCont.appendChild(buttonEventsTab);
   modalTabCont.appendChild(buttonAddEventTab);
