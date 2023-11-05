@@ -16,12 +16,12 @@ const cssClassNames = {
     dayEventTabEvents: "js-modal-dayEvent__tabs-events",
     dayEventAddEventFormCont: "js-events-cont__add-events",
     dayEventContTasksCont: "js-events-cont__events",
-    dayEventContAddEventForm : "js-events-cont__add-events__form",
+    dayEventContAddEventForm: "js-events-cont__add-events__form",
     dayEventAddFormInputCont: "js-events-cont__add-events__form-control",
     dayEventAddFormLabel: "js-events-cont__add-events__form__label",
     dayEventAddFormInput: "js-events-cont__add-events__form__input",
     dayEventAddFormCheck: "js-events-cont__add-events__form__check",
-    dayEventAddFormBtn : "js-events-cont__add-events__form__btn",
+    dayEventAddFormBtn: "js-events-cont__add-events__form__btn",
     hiddenTab: "js-tab--hidden",
 };
 
@@ -31,8 +31,8 @@ const ids = {
     dayEventTabEvents: "js-modal-dayEvent__tabs-addEvents-",
     dayEventContAddEventForm: "js-events-cont__add-events__form-",
     dayEventAddEventsTaskInput: "js-events-cont__add-events__form__input-task",
-    dayEventAddFormStatusCheckbox:"js-events-cont__add-events__form__check-task",
-    dayEventAddFormAddBtn:"js-events-cont__add-events__form__add-btn",
+    dayEventAddFormStatusCheckbox: "js-events-cont__add-events__form__check-task",
+    dayEventAddFormAddBtn: "js-events-cont__add-events__form__add-btn",
 };
 
 const settings = {
@@ -135,7 +135,7 @@ const removeOldBackDrop = () => {
 
 const getLastDayOfTheMonthNum = () => {
     const monthIndex = +document.getElementsByClassName(
-       cssClassNames.calendarMonthYearSelect
+        cssClassNames.calendarMonthYearSelect
     )[0].value;
     const year = +document.getElementsByClassName(
         cssClassNames.calendarMonthYearSelect
@@ -151,7 +151,7 @@ const showEventsCont = (e) => {
         currentBnt.classList.add(cssClassNames.dayEventTabActive);
     }
     const addEventTabBtn = document.getElementsByClassName(
-       cssClassNames.dayEventTabEvents
+        cssClassNames.dayEventTabEvents
     )[1];
     if (addEventTabBtn.classList.contains(cssClassNames.dayEventTabActive)) {
         addEventTabBtn.classList.remove(cssClassNames.dayEventTabActive);
@@ -365,7 +365,7 @@ function showDayEvents(selectedDay, events = []) {
     //Modal Container
     const modalTabCont = document.createElement("div");
     modalTabCont.setAttribute("class", "js-modal-dayEvent__tabs-cont");
-    modalTabCont.setAttribute("id","js-modal-dayEvent-" + selectedDay);
+    modalTabCont.setAttribute("id", "js-modal-dayEvent-" + selectedDay);
 
     //events tab - button
     const buttonEventsTab = document.createElement("button");
