@@ -11,7 +11,7 @@
 }
 
 body {
-    font-family: "Poppins", "Inter";
+    font-family: "Poppins", "Inter", sans-serif;
     font-size: 20rem;
 }
 
@@ -76,7 +76,7 @@ body {
     height: var(--selects_height);
 }
 
-.js-calendar__header-item {
+.js-calendar__header-day {
     display: flex;
     justify-content: center;
     align-items: center;
