@@ -12,6 +12,8 @@ const cssClassNames = {
     dayEventModalHeaderPrevBtn: "js-modal-dayEvent__header-cont__prev-btn",
     dayEventModalHeaderNextBtn: "js-modal-dayEvent__header-cont__next-btn",
     dayEventModalHeaderDayCont: "js-modal-dayEvent__header-cont__day",
+    dayEventModalBodyCont: "js-modal-dayEvent__body-cont",
+    dayEventModalTabsCont: "js-modal-dayEvent__tabs-cont",
     dayEventTabActive: "js-tab__button--active",
     dayEventTabEvents: "js-modal-dayEvent__tabs-events",
     dayEventAddEventFormCont: "js-events-cont__add-events",
@@ -27,17 +29,19 @@ const cssClassNames = {
 
 const ids = {
     dayEventAddForm: "js-events-cont__add-events-form",
+    dayEventModalTabsCont: "js-modal-dayEvent-",
     dayEventEventsTabTasksCont: "js-events-cont__events-tasks",
-    dayEventTabEvents: "js-modal-dayEvent__tabs-addEvents-",
+    dayEventBtnAddEvent: "js-modal-dayEvent__tabs-addEvents-",
     dayEventContAddEventForm: "js-events-cont__add-events__form-",
     dayEventAddEventsTaskInput: "js-events-cont__add-events__form__input-task",
     dayEventAddFormStatusCheckbox: "js-events-cont__add-events__form__check-task",
     dayEventAddFormAddBtn: "js-events-cont__add-events__form__add-btn",
 };
 
-const settings = {
+const elementsTextContent = {
     dayEventModalHeaderPrevBtnText: "<",
     dayEventModalHeaderNextBtnText: ">",
+    dayEventAddEventTabBtn: "Add Event"
 }
 const drawHeader = (dayNames) => {
     const calendarCont = document.getElementsByClassName(cssClassNames.calendarContainer)[0];
@@ -330,7 +334,7 @@ function showDayEvents(selectedDay, events = []) {
     );
     const prevDayBtn = document.createElement("button");
     prevDayBtn.setAttribute("class", cssClassNames.dayEventModalHeaderPrevBtn);
-    prevDayBtn.innerText = settings.dayEventModalHeaderPrevBtnText;
+    prevDayBtn.innerText = elementsTextContent.dayEventModalHeaderPrevBtnText;
     prevDayBtn.onclick = () => moveToPrevDate(events);
     prevDayCont.appendChild(prevDayBtn);
 
@@ -348,7 +352,7 @@ function showDayEvents(selectedDay, events = []) {
     );
     const nextDayBtn = document.createElement("button");
     nextDayBtn.setAttribute("class", cssClassNames.dayEventModalHeaderNextBtn);
-    nextDayBtn.innerText = settings.dayEventModalHeaderNextBtnText;
+    nextDayBtn.innerText = elementsTextContent.dayEventModalHeaderNextBtnText;
     nextDayBtn.onclick = () => moveToNextDate(events);
     nextDayCont.appendChild(nextDayBtn);
 
@@ -360,22 +364,25 @@ function showDayEvents(selectedDay, events = []) {
 
     //Body of the modal
     const modalBodyCont = document.createElement("div");
-    modalBodyCont.setAttribute("class", "js-modal-dayEvent__body-cont");
+    modalBodyCont.setAttribute("class", cssClassNames.dayEventModalBodyCont);
 
     //Modal Container
     const modalTabCont = document.createElement("div");
-    modalTabCont.setAttribute("class", "js-modal-dayEvent__tabs-cont");
-    modalTabCont.setAttribute("id", "js-modal-dayEvent-" + selectedDay);
+    modalTabCont.setAttribute("class", cssClassNames.dayEventModalTabsCont);
+    modalTabCont.setAttribute("id", ids.dayEventModalTabsCont + selectedDay);
 
     //events tab - button
     const buttonEventsTab = document.createElement("button");
+
     buttonEventsTab.setAttribute(
         "class",
-        "js-modal-dayEvent__tabs-events " + cssClassNames.dayEventTabActive
+        cssClassNames.dayEventTabEvents + " " + cssClassNames.dayEventTabActive
     );
+
     buttonEventsTab.setAttribute(
         "id",
-        "js-modal-dayEvent__tabs-events-" + selectedDay
+        // "js-modal-dayEvent__tabs-events-" + selectedDay
+        ids.dayEventBtnAddEvent + selectedDay
     );
     buttonEventsTab.innerText = "Events";
     buttonEventsTab.onclick = (e) => showEventsCont(e);
@@ -390,9 +397,9 @@ function showDayEvents(selectedDay, events = []) {
     buttonAddEventTab.setAttribute("class", cssClassNames.dayEventTabEvents);
     buttonAddEventTab.setAttribute(
         "id",
-        ids.dayEventTabEvents + selectedDay
+        ids.dayEventBtnAddEvent + selectedDay
     );
-    buttonAddEventTab.innerText = "Add Event";
+    buttonAddEventTab.innerText = elementsTextContent.dayEventAddEventTabBtn;
     buttonAddEventTab.onclick = (e) => showAddEventCont(e);
 
     //add event tab - container
